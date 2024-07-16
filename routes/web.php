@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\BookController;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
@@ -46,6 +48,20 @@ Route::get('books/{cate_id}', function ($cate_id) {
 // Route::get('/about', function () {
 //     return view('about');
 // });
+Route::get('/', [BookController::class, 'index'])->name('book.index');
+Route::get('/create', [BookController::class, 'create'])->name('book.create');
+Route::post('/create', [BookController::class, 'store'])->name('book.store');
+Route::get('/edit/{id}', [BookController::class, 'edit'])->name('book.edit');
+Route::put('/edit/{id}', [BookController::class, 'update'])->name('book.update');
+Route::delete('/delete/{id}', [BookController::class, 'destroy'])->name('book.destroy');
+
+
+
+
+
+Route::prefix('category')->group(function(){
+    Route::get('/list',[CategoryController::class,'index']) ->name('category.index');
+});
 
 Route::view('/about', 'about')->name('page.about');
 Route::get('/user', function () {
