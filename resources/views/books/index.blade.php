@@ -10,7 +10,11 @@
 </head>
 
 <body>
+    <div class="container">
     <h1>Danh sách</h1>
+    <th>
+        <a href="{{route('book.create')}}" class="btn btn-success">Create new</a>
+    </th>
     <table class="table">
         <thead>
             <tr>
@@ -23,9 +27,7 @@
                 <th scope="col">Price</th>
                 <th scope="col">Quantity</th>
                 <th scope="col">Category name</th>
-                <th>
-                    <a href="{{route('book.create')}}" class="btn btn-success">Create new</a>
-                </th>
+                <th scope="col">Action</th>
             </tr>
         </thead>
         <tbody>
@@ -55,6 +57,7 @@
 
         </tbody>
     </table>
+    </div>
 </body>
 
 </html>
