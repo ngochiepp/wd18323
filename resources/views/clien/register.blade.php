@@ -10,7 +10,7 @@
 <body>
     <div class="container">
         <h1>Register</h1>
-    <form class="row g-3" action="{{route ('submitregister')}}" method="Post" enctype="multipart/form-data">
+    <form class="row g-3" action="{{route ('admin.submitregister')}}" method="Post" enctype="multipart/form-data">
         @csrf
         <div class="mb-3">
             <label  class="form-label">Fullname</label>
@@ -43,7 +43,7 @@
           </div>
         <div class="col-12">
           <button type="submit" class="btn btn-primary">Register</button>
-          <a href="{{ route('login')}}" class="btn btn-primary">Login</a>
+          <a href="{{ route('admin.login')}}" class="btn btn-primary">Login</a>
         </div>
       </form>
     </div>

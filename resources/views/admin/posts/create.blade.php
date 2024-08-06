@@ -18,31 +18,56 @@
     <div class="container ư-50">
         <h1> Create new post</h1>
         <a href="{{ route('post.index') }}" class="btn btn-success">List post</a>
+        {{-- Thông báo lỗi khi validate --}}
+        @if ($errors->any())
+          <div class="alert alert-danger mt-3">
+            <ul>
+              @foreach ($errors->all() as $error )
+                <li>{{$error}}</li>
+              @endforeach
+            </ul>
+          </div>
+        @endif
         <form action="{{ route('post.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="mb-3">
                 <label  class="form-label">Title</label>
-                <input type="" class="form-control"  name="title">
+                <input type="" class="form-control"  name="title" value="{{ old('title')}}">
+                @error('title')
+                  <span class="text-danger">{{ $message}}</span>
+                @enderror
               </div>
               {{-- Hình ảnh --}}
               <div class="mb-3">
                 <label  class="form-label">Image</label>
-                <input type="file" class="form-control"  name="image">
+                <input type="file" class="form-control"  name="image" value="{{ old('image')}}">
+                @error('image')
+                <span class="text-danger">{{ $message}}</span>
+              @enderror
               </div>
 
               <div class="mb-3">
                 <label class="form-label">Description</label>
-                <textarea class="form-control" name="description"  rows="3"></textarea>
+                <textarea class="form-control" name="description"  rows="3">{{ old('description')}}</textarea>
+                @error('description')
+                <span class="text-danger">{{ $message}}</span>
+              @enderror
               </div>
 
               <div class="mb-3">
                 <label class="form-label">Content</label>
-                <textarea class="form-control" name="content"  rows="6"></textarea>
+                <textarea class="form-control" name="content"  rows="6">{{ old('content')}}</textarea>
+                @error('content')
+                <span class="text-danger">{{ $message}}</span>
+              @enderror
               </div>
 
               <div class="mb-3">
                 <label class="form-label">View</label>
-                <textarea class="form-control" name="view"  class="form-control"></textarea>
+                <textarea class="form-control" name="view"  class="form-control"> {{ old('view')}}</textarea>
+                @error('view')
+                <span class="text-danger">{{ $message}}</span>
+              @enderror
               </div>
 
               <div class="mb-3">
@@ -50,6 +75,7 @@
                 <select name="cate_id" class="form-select">
                     @foreach ($categories as $cate)
                         <option value="{{ $cate->id}}">
+                            @selected($cate->id == old('cate_id'))
                             {{ $cate->name}}
                         </option>
                     @endforeach

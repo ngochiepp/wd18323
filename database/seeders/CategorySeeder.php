@@ -19,14 +19,14 @@ class CategorySeeder extends Seeder
         //
         
 
-            DB::table('categories')->insert([
-                ['name' => 'Thể thao'],
-                ['name' => 'Sức khỏe'],
-                ['name' => 'Thư viện'],
-                ['name' => 'Khoa học'],
-                ['name' => 'Thông tin'],
-                ['name' => 'Kinh doanh'],
-            ]);
+        $faker = Faker::create();
+        DB::table('categories')->insert([
+            ['name' => 'Trinh thám'],
+            ['name' => 'Cổ tích'],
+            ['name' => 'Thám hiểm'],
+            ['name' => 'Thần thoại'],
+            ['name' => 'Truyện tranh'],
+        ]);
     }
 
 }

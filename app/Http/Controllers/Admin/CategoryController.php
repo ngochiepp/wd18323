@@ -10,6 +10,6 @@ class CategoryController extends Controller
 {
     public function index(){
         $categories = DB::table('categories')->get();
-        return view('admin.categories.index', compact('categories'));
+        return view('asm.admin.catelist', compact('categories'));
     }
 }

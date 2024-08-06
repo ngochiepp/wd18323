@@ -28,7 +28,7 @@
         @if (session('loginError'))
             <div class="alert alert-danger">{{ session('loginError') }}</div>
         @endif
-        <form class="row g-3" action="{{ route('submitlogin') }}" method="Post">
+        <form class="row g-3" action="{{ route('admin.submitlogin') }}" method="Post">
             @csrf
             <div class="col-12">
                 <label for="inputEmail4" class="form-label">Email</label>
@@ -40,7 +40,8 @@
             </div>
             <div class="col-12">
                 <button type="submit" class="btn btn-primary">Login</button>
-                <button type="submit" class="btn btn-primary"><a href="{{ route('submitregister') }}"></a>Register</button>
+                <a href="{{ route('admin.register') }}" class="btn btn-primary">Register</a>
+                {{-- <button class="btn btn-primary"><a href="{{ route('admin.register') }}"></a>Register</button> --}}
             </div>
         </form>
     </div>

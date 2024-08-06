@@ -10,7 +10,8 @@ use Illuminate\Support\Facades\Hash;
 class LoginController extends Controller
 {
     //
-    public function home(){
+    public function home()
+    {
         return view('clien.home');
     }
     public function account()
@@ -18,10 +19,11 @@ class LoginController extends Controller
         return view('admin.account');
     }
 
-    public function listUser(User $user){
+    public function listUser(User $user)
+    {
         $users = User::where('id', '!=', $user->id)
-        ->where('role', 'user')
-        ->paginate(5);
+            ->where('role', 'user')
+            ->paginate(5);
         return view('clien.home', compact('users'));
     }
     public function onAccount(User $user)
@@ -36,7 +38,16 @@ class LoginController extends Controller
         $user->update();
         return redirect()->back()->with('userOfAccount', "Ngừng hoạt động tài khoản $user->fullName");
     }
-    public function login(Request $request)
+    public function deleteUser(User $user)
+    {
+        $user->delete();
+        return redirect()->back()->with('deleteuserseccess', 'Xóa thành công tài khoản');
+    }
+    public function login()
+    {
+        return view('clien.login');
+    }
+    public function submitlogin(Request $request)
     {
         $request->validate([
             'email' => 'required|email',
@@ -48,18 +59,18 @@ class LoginController extends Controller
 
         if (Auth::attempt($data)) {
             $user = Auth::user();
-            if ($user->active == 1) {
+            if ($user->role == 'admin') {
                 return redirect()->route('admin.categories')->with('loginSuccess', 'Đăng nhập thành công!');
             } else {
                 Auth::logout(); // Đăng xuất nếu đã đăng nhập
                 return redirect()->route('clien.submitlogin')->with('loginError', 'Tài khoản của bạn đã bị vô hiệu hóa!');
             }
         }
-        return redirect()->route('clien.submitlogin')->with('loginError', 'Tài khoản hoặc mật khẩu không đúng!');
+        return redirect()->route('admin.login')->with('loginError', 'Tài khoản hoặc mật khẩu không đúng!');
     }
-    public function submitlogin(Request $request)
+    public function formRegister(Request $request)
     {
-        return view('clien.login');
+        return view('clien.register');
     }
     public function logout()
     {
@@ -70,40 +81,24 @@ class LoginController extends Controller
     {
         $data = $request->except('avatar');
         $data = $request->validate([
-            'fullname' =>['required'],
-            'username' =>['required', 'unique:users'],
-            'email' =>['required', 'email', 'unique:users'],
-            'password' =>['required', 'min:3', 'max:25'],
-            'avatar' =>['nullable', 'image', 'mimes:jpeg,png,jpg,gif|max:2048'],
-        ]);
-        // up load hình ảnh 
-        if($request->hasFile('avatar')){
-            $avatar_path = $request->file('avatar')->store('image');
-            $data['avatar']= $avatar_path;
-        }
-        User::create($data);
-        return redirect()->route('submitlogin')->with('registerSuccess', 'Đăng ký thành công');
-    }
-    public function register(Request $request)
-    {
-        $data = $request->except('avatar');
-        $data = $request->validate([
             'fullname' => ['required'],
             'username' => ['required', 'unique:users'],
             'email' => ['required', 'email', 'unique:users'],
-            'password' => ['required', 'min:3', 'max:50'],
+            'password' => ['required', 'min:3', 'max:25'],
             'avatar' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif|max:2048'],
         ]);
-        // Upload hình ảnh
+        // up load hình ảnh 
         if ($request->hasFile('avatar')) {
             $avatar_path = $request->file('avatar')->store('image');
             $data['avatar'] = $avatar_path;
         }
-        $data['password'] = Hash::make($request->input('password'));
-        // Thêm dữ liệu vào database
         User::create($data);
-        return redirect()->route('submitlogin')->with('registerSuccess', 'Đăng ký thành công!');
-        // return view('clien.register');
+        return redirect()->route('submitlogin')->with('registerSuccess', 'Đăng ký thành công');
+    }
+    public function register()
+    {
+
+        return view('clien.register');
     }
     public function formUpdatePassword(User $user)
     {
@@ -133,5 +128,4 @@ class LoginController extends Controller
             return redirect()->back()->with('passError', 'Sai mật khẩu');
         }
     }
-
 }
